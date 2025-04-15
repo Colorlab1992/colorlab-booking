@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 
 const CALENDAR_ID = process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_ID!
 
@@ -27,7 +27,7 @@ type Program = {
   calendarId: string
 }
 
-export default function ProgramSelectPage() {
+function ProgramSelectPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const lang = searchParams.get('lang') || 'en'
@@ -96,5 +96,13 @@ export default function ProgramSelectPage() {
         Continue →
       </button>
     </main>
+  )
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProgramSelectPage />
+    </Suspense>
   )
 }
