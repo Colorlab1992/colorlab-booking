@@ -1,0 +1,10 @@
+/* /app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 기본 폰트, 색상, 배경 설정 */
+body {
+  @apply text-base text-gray-800 bg-white;
+  font-family: 'Pretendard', sans-serif;
+}
