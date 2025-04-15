@@ -20,13 +20,20 @@ const allPrograms = {
   ],
 }
 
+type Program = {
+  id: string
+  name: string
+  maxPeople: number
+  calendarId: string
+}
+
 export default function ProgramSelectPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const lang = searchParams.get('lang') || 'en'
 
-  const programs = allPrograms[lang as 'en' | 'zh']
-  const [selectedProgram, setSelectedProgram] = useState<any>(null)
+  const programs: Program[] = allPrograms[lang as 'en' | 'zh']
+  const [selectedProgram, setSelectedProgram] = useState<Program | null>(null)
   const [peopleCount, setPeopleCount] = useState(1)
 
   const handleNext = () => {

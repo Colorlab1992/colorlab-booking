@@ -4,6 +4,11 @@ import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { parseISO, addHours } from 'date-fns'
 
+interface ReservationEvent {
+  start: string
+  end: string
+}
+
 export default function SchedulePage() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -30,8 +35,8 @@ export default function SchedulePage() {
   const durationMap: Record<string, Record<number, number>> = {
     'personal-full': { 1: 2, 2: 3, 3: 4 },
     'personal-semi': { 1: 2, 2: 3, 3: 4 },
-    'bodytype':      { 1: 2, 2: 3, 3: 4 },
-    'total':         { 1: 3, 2: 5 }
+    'bodytype': { 1: 2, 2: 3, 3: 4 },
+    'total': { 1: 3, 2: 5 }
   }
 
   const duration = durationMap[programKey]?.[people] || 1
@@ -65,7 +70,7 @@ export default function SchedulePage() {
         })
 
         const data = await res.json()
-        const reservations = data.reservations || []
+        const reservations: ReservationEvent[] = data.reservations || []
 
         const blocked: string[] = []
 
@@ -75,7 +80,7 @@ export default function SchedulePage() {
 
           if (slotEnd.getHours() > 21) continue
 
-          const overlap = reservations.some((event: any) => {
+          const overlap = reservations.some((event) => {
             const start = parseISO(event.start)
             const end = parseISO(event.end)
             return start < slotEnd && end > slotStart
@@ -104,7 +109,7 @@ export default function SchedulePage() {
     localStorage.setItem('selectedTime', selectedTime)
     localStorage.setItem('program', programId)
     localStorage.setItem('lang', lang)
-    localStorage.setItem('people', people.toString()) // ✅ 이 줄 추가!
+    localStorage.setItem('people', people.toString())
 
     router.push('/payment')
   }
